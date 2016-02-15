@@ -75,7 +75,8 @@ public class MainActivity extends AppCompatActivity {
         getTrack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getTrackJsonFromUrl("http://"+ADDR+"/oom/getTrack?trackNumber="+trackText.getText().toString());
+                //getTrackJsonFromUrl("http://"+ADDR+"/oom/getTrack?trackNumber="+trackText.getText().toString());
+                getTrackJsonForTest();
 
             }
         });
@@ -110,6 +111,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void getTrackJsonForTest(){
+        JSONArray tracks = thaiPostTrackReader.getJsonTrackForTest();
+        Intent i = new Intent(getApplicationContext(),ShowTrackResultActivity.class);
+        startActivity(i);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -131,4 +138,4 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-}
+}// end class

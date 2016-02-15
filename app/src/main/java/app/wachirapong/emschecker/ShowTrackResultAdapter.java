@@ -1,11 +1,14 @@
 package app.wachirapong.emschecker;
 
 
+import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -14,6 +17,7 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -24,7 +28,7 @@ public class ShowTrackResultAdapter extends RecyclerView.Adapter<ShowTrackResult
     private ThaiPostTrackReader thaiPostTrackReader;
     private JSONArray jsonArray;
     private JSONObject bindingTrack;
-
+    public static Context context;
     private String[] dateArray;
 
 
@@ -34,15 +38,38 @@ public class ShowTrackResultAdapter extends RecyclerView.Adapter<ShowTrackResult
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
+
+        private View v;
         public TextView mTextView;
+        private RecyclerView mRecyclerView;
+        private RecyclerView.Adapter mAdapter;
+        private RecyclerView.LayoutManager mLayoutManager;
+
+
         public ViewHolder(View v) {
             super(v);
+            this.v = v;
+            //setRecycleView();
             mTextView = (TextView) v.findViewById(R.id.tvTest);
+            setListView();
         }
+
+        private void setListView(){
+            List<String> messages = Arrays.asList("Hello", "World!", "How", "Are", "You");
+            ListView yourListView = (ListView) v.findViewById(R.id.dateDetailLV);
+            DateDetailAdapter customAdapter = new DateDetailAdapter(context, R.layout.date_detail_recycle_view, messages);
+
+            yourListView .setAdapter(customAdapter);
+        }
+
+
+
+
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ShowTrackResultAdapter(String[] myDataset) {
+    public ShowTrackResultAdapter(String[] myDataset,Context context) {
+        this.context = context;
         //mDataset = myDataset;
         thaiPostTrackReader = new ThaiPostTrackReader();
         jsonArray = ThaiPostTrackReader.getTrackJson();
@@ -94,13 +121,13 @@ public class ShowTrackResultAdapter extends RecyclerView.Adapter<ShowTrackResult
 
     // Create new views (invoked by the layout manager)
     @Override
-    public ShowTrackResultAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType) {
+    public ShowTrackResultAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.show_track_rusult_recycle_view, parent, false);
         // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v);
+
         return vh;
     }
 
@@ -117,4 +144,6 @@ public class ShowTrackResultAdapter extends RecyclerView.Adapter<ShowTrackResult
     public int getItemCount() {
         return dateArray.length;
     }
+
+
 }

@@ -39,7 +39,7 @@ public class ShowTrackResultActivity extends AppCompatActivity {
 
         // specify an adapter (see also next example)
         String[] a = {"asdasd","asdasdsad","asdasdsad","asdasdsad","asdasdsad","asdasdsad","asdasdsad","asdasdsad"};
-        mAdapter = new ShowTrackResultAdapter( a );
+        mAdapter = new ShowTrackResultAdapter( a,getApplicationContext() );
         mRecyclerView.setAdapter(mAdapter);
     }
 }//end class
