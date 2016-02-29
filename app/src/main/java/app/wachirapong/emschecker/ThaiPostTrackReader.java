@@ -141,7 +141,12 @@ public class ThaiPostTrackReader {
     }
 
     public static JSONArray getJsonTrackForTest(){
-        setDateAndTime(true);
+        //setDateAndTime(true);
+        try {
+            trackJson = new JSONArray(stringTest);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return trackJson;
     }
 

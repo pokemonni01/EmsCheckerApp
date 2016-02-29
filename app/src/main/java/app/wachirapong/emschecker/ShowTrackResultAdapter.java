@@ -38,42 +38,30 @@ public class ShowTrackResultAdapter extends RecyclerView.Adapter<ShowTrackResult
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-
         private View v;
-        public TextView mTextView;
-        private RecyclerView mRecyclerView;
-        private RecyclerView.Adapter mAdapter;
-        private RecyclerView.LayoutManager mLayoutManager;
-
+        public TextView tvDate;
+        public TextView tvLocation;
+        public TextView tvDescription;
+        public TextView tvStatus;
 
         public ViewHolder(View v) {
             super(v);
             this.v = v;
             //setRecycleView();
-            mTextView = (TextView) v.findViewById(R.id.tvTest);
-            setListView();
+            tvDate = (TextView) v.findViewById(R.id.tvDate);
+            tvLocation = (TextView) v.findViewById(R.id.tvLocation);
+            tvDescription = (TextView) v.findViewById(R.id.tvDescription);
+            tvStatus = (TextView) v.findViewById(R.id.tvStatus);
         }
-
-        private void setListView(){
-            List<String> messages = Arrays.asList("Hello", "World!", "How", "Are", "You");
-            ListView yourListView = (ListView) v.findViewById(R.id.dateDetailLV);
-            DateDetailAdapter customAdapter = new DateDetailAdapter(context, R.layout.date_detail_recycle_view, messages);
-
-            yourListView .setAdapter(customAdapter);
-        }
-
-
-
-
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ShowTrackResultAdapter(String[] myDataset,Context context) {
+    public ShowTrackResultAdapter(Context context) {
         this.context = context;
         //mDataset = myDataset;
         thaiPostTrackReader = new ThaiPostTrackReader();
         jsonArray = ThaiPostTrackReader.getTrackJson();
-        setDateAndTime();
+        //setDateAndTime();
     }
 
     private void setDateAndTime(){
@@ -109,7 +97,7 @@ public class ShowTrackResultAdapter extends RecyclerView.Adapter<ShowTrackResult
             }
             Set<String> dateSet = new HashSet<String>(Arrays.asList( dateArray ));
             dateArray = dateSet.toArray(new String[1]);
-            Log.d(CLASSNAME,bindingTrack.toString());
+            //Log.d(CLASSNAME,bindingTrack.toString());
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -136,13 +124,24 @@ public class ShowTrackResultAdapter extends RecyclerView.Adapter<ShowTrackResult
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.mTextView.setText( dateArray[position] );
+        JSONObject jsonObject;
+        try {
+            jsonObject = jsonArray.getJSONObject(position);
+            holder.tvDate.setText( jsonObject.getString("date") );
+            holder.tvLocation.setText( jsonObject.getString("location") );
+            holder.tvDescription.setText( jsonObject.getString("description") );
+            holder.tvStatus.setText( jsonObject.getString("status") );
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return dateArray.length;
+        return jsonArray.length();
     }
 
 
